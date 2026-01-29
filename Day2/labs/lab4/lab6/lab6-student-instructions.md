@@ -283,7 +283,7 @@ Add tags to your infrastructure. Edit your `main.tf` file and add or modify Lab 
 ```hcl
 resource "aws_instance" "web_server" {
 
-  # AMI (Amazon Machine Image) - Amazon Linux 2023 for ap-south-1
+  # AMI (Amazon Machine Image) - Amazon Linux 2023 for us-west-1
   ami = "ami-067ec7f9e54a67559"
 
   instance_type = "t3.micro"

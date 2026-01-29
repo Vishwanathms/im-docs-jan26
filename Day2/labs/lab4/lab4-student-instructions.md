@@ -124,7 +124,7 @@ Create `variables.tf`:
 variable "aws_region" {
   description = "AWS region for resources"
   type        = string
-  default     = "ap-south-1"
+  default     = "us-west-1"
 }
 
 # EC2 instance type
@@ -142,7 +142,7 @@ variable "instance_type" {
 
 **What this code does:**
 - `variable "aws_region"` - Declares the region variable with a default
-- `default = "ap-south-1"` - Makes this variable **optional** (uses default if not specified)
+- `default = "us-west-1"` - Makes this variable **optional** (uses default if not specified)
 - `variable "instance_type"` - Declares the instance type variable **without a default**
 - **No default** - Makes this variable **required** (Terraform will prompt if not set in terraform.tfvars)
 - `validation` - Ensures only t3.nano or t3.micro can be used
@@ -161,7 +161,7 @@ variable "instance_type" {
 
 In Lab 1, we hardcoded values in main.tf:
 ```hcl
-region = "ap-south-1"
+region = "us-west-1"
 instance_type = "t3.micro"
 ```
 
@@ -183,7 +183,7 @@ Create `terraform.tfvars`:
 ```hcl
 # terraform.tfvars - Your variable values
 
-aws_region    = "ap-south-1"
+aws_region    = "us-west-1"
 instance_type = "t3.nano"
 ```
 
@@ -428,7 +428,7 @@ Ready for more practice? Try deploying with a different configuration.
 1. Create a new file called `staging.tfvars`:
 
 ```hcl
-aws_region    = "ap-south-1"
+aws_region    = "us-west-1"
 instance_type = "t3.micro"  # Larger than dev
 ```
 

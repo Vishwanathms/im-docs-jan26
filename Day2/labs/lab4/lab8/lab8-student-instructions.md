@@ -421,7 +421,7 @@ web_url = "http://54.123.45.67"
 **In AWS Console:**
 
 1. Log into AWS Console
-2. Ensure region is **ap-south-1**
+2. Ensure region is **us-west-1**
 3. Navigate to **EC2** → **Instances**
 4. Find your instance with tag: `Owner = UserX`
 5. Verify:
@@ -638,7 +638,7 @@ Error: Saved plan is stale
 ### Issue: Apply Succeeds But Resources Not Visible
 
 **Check:**
-1. Correct AWS region (ap-south-1)
+1. Correct AWS region (us-west-1)
 2. Correct AWS account
 3. Resource tags (search by Owner = UserX)
 4. State file shows resources created

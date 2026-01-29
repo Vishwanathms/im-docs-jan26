@@ -12,7 +12,7 @@ terraform {
   backend "s3" {
     bucket       = "boa-terraform-state-userX" # Replace userX
     key          = "terraform.tfstate"     # Path within bucket
-    region       = "ap-south-1"
+    region       = "us-west-1"
     encrypt      = true
     use_lockfile = true # S3 native locking (requires versioning enabled)
   }

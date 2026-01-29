@@ -65,7 +65,7 @@ Your bank needs to deploy the same payment processing infrastructure to:
 ```hcl
 # terraform.tf
 provider "aws" {
-  region = "ap-south-1"  # Hardcoded
+  region = "us-west-1"  # Hardcoded
 }
 
 # main.tf
@@ -121,7 +121,7 @@ variable "variable_name" {
 variable "aws_region" {
   description = "AWS region for resources"
   type        = string
-  default     = "ap-south-1"
+  default     = "us-west-1"
 }
 ```
 
@@ -171,7 +171,7 @@ D) `env.environment`
 variable "aws_region" {
   description = "AWS region for resources"
   type        = string
-  default     = "ap-south-1"  # Terraform uses this if no value provided
+  default     = "us-west-1"  # Terraform uses this if no value provided
 }
 ```
 
@@ -197,7 +197,7 @@ Terraform supports several data types. **Start with these three:**
 
 | Type | Description | Example Value |
 |------|-------------|---------------|
-| `string` | Text value | `"t3.micro"`, `"ap-south-1"` |
+| `string` | Text value | `"t3.micro"`, `"us-west-1"` |
 | `number` | Numeric value | `3`, `5.5` |
 | `bool` | True or false | `true`, `false` |
 
@@ -238,7 +238,7 @@ variable "enable_monitoring" {
 variable "availability_zones" {
   description = "AZs for deployment"
   type        = list(string)
-  default     = ["ap-south-1a", "ap-south-1b"]
+  default     = ["us-west-1a", "us-west-1b"]
 }
 ```
 
@@ -443,7 +443,7 @@ D) Both B and C
 
 ```hcl
 # Default/Dev configuration
-aws_region    = "ap-south-1"
+aws_region    = "us-west-1"
 instance_type = "t3.nano"
 ```
 
@@ -453,7 +453,7 @@ instance_type = "t3.nano"
 variable "aws_region" {
   description = "AWS region for resources"
   type        = string
-  default     = "ap-south-1"
+  default     = "us-west-1"
 }
 
 variable "instance_type" {
@@ -480,13 +480,13 @@ variable "instance_type" {
 
 **File: `terraform.tfvars` (dev/default)**
 ```hcl
-aws_region    = "ap-south-1"
+aws_region    = "us-west-1"
 instance_type = "t3.nano"
 ```
 
 **File: `staging.tfvars`**
 ```hcl
-aws_region    = "ap-south-1"
+aws_region    = "us-west-1"
 instance_type = "t3.micro"  # Larger for staging
 ```
 
@@ -543,7 +543,7 @@ variable "region" {
 
 **Method 2: terraform.tfvars (automatically loaded)**
 ```hcl
-region = "ap-south-1"
+region = "us-west-1"
 ```
 
 **Method 3: Custom .tfvars files**
@@ -653,7 +653,7 @@ instance_id = "i-0abc123def456789"
 instance_public_ip = "54.123.45.67"
 configuration = {
   instance_type = "t3.nano"
-  region        = "ap-south-1"
+  region        = "us-west-1"
 }
 ```
 
@@ -727,7 +727,7 @@ $ terraform output database_endpoint
 <sensitive output hidden>
 
 $ terraform output -raw database_endpoint
-payment-db.abc123.ap-south-1.rds.amazonaws.com:3306
+payment-db.abc123.us-west-1.rds.amazonaws.com:3306
 ```
 
 **Why This Matters:**

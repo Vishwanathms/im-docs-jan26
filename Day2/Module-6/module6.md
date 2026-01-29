@@ -189,7 +189,7 @@ terraform {
   backend "s3" {
     bucket       = "your-bucket-name"
     key          = "project-name/terraform.tfstate"
-    region       = "ap-south-1"
+    region       = "us-west-1"
     encrypt      = true
     use_lockfile = true  # S3 native locking
   }
