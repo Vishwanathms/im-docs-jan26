@@ -1,0 +1,125 @@
+// Simple Jenkinsfile with manual approvals for Terraform deployments
+// Based on lab7.1.Jenkinsfile-simple-plan with added approval and apply stages
+//
+// Branch behavior:
+// - develop branch: staging.tfvars, single approval, then apply
+// - main branch: prod.tfvars, double approval, then apply
+// - other branches: staging.tfvars, plan only (no apply)
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Determine Environment') {
+            steps {
+                script {
+                    // Set tfvars file based on branch
+                    if (env.BRANCH_NAME == 'develop') {
+                        env.TFVARS_FILE = 'staging.tfvars'
+                        env.ENVIRONMENT = 'Staging'
+                    } else if (env.BRANCH_NAME == 'main') {
+                        env.TFVARS_FILE = 'prod.tfvars'
+                        env.ENVIRONMENT = 'Production'
+                    } else {
+                        // Default to staging for feature branches
+                        env.TFVARS_FILE = 'staging.tfvars'
+                        env.ENVIRONMENT = 'Staging (default)'
+                    }
+                    echo "Environment: ${env.ENVIRONMENT}"
+                    echo "Using tfvars: ${env.TFVARS_FILE}"
+                }
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                sh 'terraform init -input=false'
+            }
+        }
+
+        stage('Terraform Validate') {
+            steps {
+                sh 'terraform validate'
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                sh "terraform plan -var-file=${env.TFVARS_FILE} -input=false"
+            }
+        }
+
+        stage('Approval - Staging') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                script {
+                    echo "Waiting for approval to deploy to Staging..."
+                    input(
+                        message: "Review the Terraform plan. Approve to apply to Staging?",
+                        ok: "Approve",
+                        submitter: "admin"
+                    )
+                    echo "Staging deployment approved"
+                }
+            }
+        }
+
+        stage('Approval - Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    echo "Waiting for first approval..."
+                    def firstApprover = input(
+                        message: "First approval for Production deployment",
+                        ok: "Approve",
+                        submitter: "admin,approver",
+                        submitterParameter: "FIRST_APPROVER"
+                    )
+                    echo "First approval received from: ${firstApprover}"
+
+                    echo "Waiting for second approval..."
+                    def secondApprover = input(
+                        message: "Second approval for Production deployment",
+                        ok: "Approve",
+                        submitter: "admin,approver",
+                        submitterParameter: "SECOND_APPROVER"
+                    )
+
+                    if (firstApprover == secondApprover) {
+                        error("Production requires TWO DIFFERENT approvers. ${firstApprover} cannot approve twice.")
+                    }
+                    echo "Second approval received from: ${secondApprover}"
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            when {
+                anyOf {
+                    branch 'develop'
+                    branch 'main'
+                }
+            }
+            steps {
+                sh "terraform apply -var-file=${env.TFVARS_FILE} -input=false -auto-approve"
+                echo "Terraform apply completed for ${env.ENVIRONMENT}"
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}

@@ -83,8 +83,8 @@ https://developer.hashicorp.com/terraform/language
 Create and navigate to your lab directory:
 ```bash
 cd
-mkdir lab1-first-deployment
-cd lab1-first-deployment
+mkdir -p Day1/lab1
+cd Day1/lab1
 ```
 
 ---
